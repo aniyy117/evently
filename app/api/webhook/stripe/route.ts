@@ -7,7 +7,8 @@ export async function POST(request: Request) {
 
   const sig = request.headers.get("stripe-signature") as string;
   const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
-
+  // just for check purpose
+  console.log(endpointSecret, sig, body);
   let event;
 
   try {
@@ -30,6 +31,8 @@ export async function POST(request: Request) {
       totalAmount: amount_total ? (amount_total / 100).toString() : "0",
       createdAt: new Date(),
     };
+
+    console.log({ order });
 
     const newOrder = await createOrder(order);
     return NextResponse.json({ message: "OK", order: newOrder });
